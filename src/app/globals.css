@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Doto:wght@400..900&display=swap');
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: 'Doto', sans-serif;
+    /* LIGHT MODE (Default - Nothing Design) */
+    --black: #F5F5F5;
+    --surface: #FFFFFF;
+    --surface-raised: #F0F0F0;
+    --border: #E8E8E8;
+    --border-visible: #CCCCCC;
+    --text-disabled: #999999;
+    --text-secondary: #666666;
+    --text-primary: #1A1A1A;
+    --text-display: #000000;
+    --interactive: #007AFF;
+    
+    --accent-red: #D71921;
+
+    --background: var(--black);
+    --foreground: var(--text-primary);
+    
+    --primary: #D71921;
+    --primary-foreground: #FFFFFF;
+    
+    --card: var(--surface);
+    --card-foreground: var(--text-primary);
+    --popover: var(--surface-raised);
+    --popover-foreground: var(--text-primary);
+    --secondary: var(--surface-raised);
+    --secondary-foreground: var(--text-primary);
+    --muted: var(--surface-raised);
+    --muted-foreground: var(--text-secondary);
+    --accent: var(--surface-raised);
+    --accent-foreground: var(--text-display);
+    --border-ui: var(--border-visible);
+    --input: var(--border-visible);
+    --ring: var(--border-visible);
+    --radius: 0px; /* Industrial sharp edges */
+    --sidebar: var(--surface);
+    --sidebar-foreground: var(--text-primary);
+    --sidebar-primary: var(--text-display);
+    --sidebar-primary-foreground: var(--black);
+    --sidebar-accent: var(--surface-raised);
+    --sidebar-accent-foreground: var(--text-primary);
+    --sidebar-border: var(--border-visible);
+    --sidebar-ring: var(--border-visible);
+  }
+
+  .dark {
+    /* DARK MODE (Nothing Design) */
+    --black: #000000;
+    --surface: #111111;
+    --surface-raised: #1A1A1A;
+    --border: #222222;
+    --border-visible: #333333;
+    --text-disabled: #666666;
+    --text-secondary: #999999;
+    --text-primary: #E8E8E8;
+    --text-display: #FFFFFF;
+    --interactive: #5B9BF6;
+
+    --background: var(--black);
+    --foreground: var(--text-primary);
+    
+    --primary: #D71921;
+    --primary-foreground: #FFFFFF;
+    
+    --card: var(--surface);
+    --card-foreground: var(--text-primary);
+    --popover: var(--surface-raised);
+    --popover-foreground: var(--text-primary);
+    --primary: var(--text-display);
+    --primary-foreground: var(--black);
+    --secondary: var(--surface-raised);
+    --secondary-foreground: var(--text-primary);
+    --muted: var(--border);
+    --muted-foreground: var(--text-secondary);
+    --accent: var(--border);
+    --accent-foreground: var(--text-display);
+    --destructive: #D71921;
+    --border-ui: var(--border-visible);
+    --input: var(--border-visible);
+    --ring: var(--border-visible);
+    --sidebar: var(--surface);
+    --sidebar-foreground: var(--text-primary);
+    --sidebar-primary: var(--text-display);
+    --sidebar-primary-foreground: var(--black);
+    --sidebar-accent: var(--surface-raised);
+    --sidebar-accent-foreground: var(--text-primary);
+    --sidebar-border: var(--border-visible);
+    --sidebar-ring: var(--border-visible);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-[var(--border-ui)] outline-[var(--ring)];
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  
+  /* Nothing Design: Dot Grid Pattern */
+  .dot-grid {
+    background-image: radial-gradient(circle, var(--border-visible) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+  .dot-grid-subtle {
+    background-image: radial-gradient(circle, var(--border) 0.5px, transparent 0.5px);
+    background-size: 12px 12px;
+  }
+}

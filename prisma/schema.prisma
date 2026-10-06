@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+  CLIENT
+}
+
+enum Division {
+  CONSTRUCTION
+  OIL_GAS
+  AGRICULTURE
+  HOSPITALITY
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  DECLINED
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  name          String
+  role          Role           @default(CLIENT)
+  division      Division?      // Staff/Admins can belong to a specific division
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  bookings      Booking[]      @relation("ClientBookings")
+  schedules     Schedule[]     @relation("StaffSchedules")
+  notifications Notification[]
+}
+
+model Service {
+  id             String    @id @default(uuid())
+  name           String
+  description    String
+  division       Division
+  // JSON schema that defines what fields a client must fill out for this service
+  metadataSchema Json      
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  bookings       Booking[]
+}
+
+model Booking {
+  id          String        @id @default(uuid())
+  clientId    String
+  serviceId   String
+  status      BookingStatus @default(PENDING)
+  
+  // Stores the client's submitted polymorphic data matching the service's metadataSchema
+  metadata    Json          
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  client      User          @relation("ClientBookings", fields: [clientId], references: [id], onDelete: Cascade)
+  service     Service       @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  schedules   Schedule[]
+}
+
+model Schedule {
+  id        String   @id @default(uuid())
+  staffId   String
+  bookingId String?
+  startTime DateTime
+  endTime   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  staff     User     @relation("StaffSchedules", fields: [staffId], references: [id], onDelete: Cascade)
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Resource {
+  id        String   @id @default(uuid())
+  name      String
+  type      String
+  division  Division
+  status    String   @default("AVAILABLE")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
