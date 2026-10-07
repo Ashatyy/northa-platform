@@ -62,6 +62,31 @@ export default async function BookingDetailsPage(props: { params: Promise<{ id: 
             </div>
           </div>
         </div>
+
+        {booking.schedules.length > 0 && (
+          <div className="bg-card border border-border p-8 space-y-6">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Allocated Schedule & Resources</h3>
+            <div className="space-y-4">
+              {booking.schedules.map(s => (
+                <div key={s.id} className="p-4 border border-border bg-background flex justify-between items-center">
+                  <div>
+                    <p className="font-bold text-sm uppercase tracking-widest">{s.staff.name}</p>
+                    <p className="text-xs text-muted-foreground">Assigned Personnel</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-mono text-sm">
+                      {new Date(s.startTime).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}
+                    </p>
+                    <p className="font-mono text-sm text-muted-foreground">to</p>
+                    <p className="font-mono text-sm">
+                      {new Date(s.endTime).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         
         {dbUser?.role === 'ADMIN' && (
           <BookingLifecycleClient booking={booking} staff={staff} />

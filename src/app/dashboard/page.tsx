@@ -24,7 +24,7 @@ export default async function DashboardPage() {
     const pendingBookings = await prisma.booking.count({ where: { clientId: user.id, status: "PENDING" } });
     const recentBookings = await prisma.booking.findMany({
       where: { clientId: user.id },
-      include: { service: true },
+      include: { service: true, schedules: true },
       orderBy: { createdAt: 'desc' },
       take: 5
     });
@@ -76,7 +76,13 @@ export default async function DashboardPage() {
                 <div key={booking.id} className="flex items-center justify-between p-4 border border-border bg-background hover:border-primary/50 transition-colors">
                   <div>
                     <h4 className="font-semibold">{booking.service.name}</h4>
-                    <p className="text-sm text-muted-foreground">{format(booking.createdAt, 'PPP')}</p>
+                    {booking.status === 'CONFIRMED' && booking.schedules.length > 0 ? (
+                      <p className="text-sm text-primary font-mono font-medium mt-0.5">
+                        Scheduled: {new Date(booking.schedules[0].startTime).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}
+                      </p>
+                    ) : (
+                      <p className="text-sm text-muted-foreground mt-0.5">{format(booking.createdAt, 'PPP')}</p>
+                    )}
                   </div>
                   <div className="text-right">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-medium uppercase tracking-wider bg-secondary text-secondary-foreground border border-border">

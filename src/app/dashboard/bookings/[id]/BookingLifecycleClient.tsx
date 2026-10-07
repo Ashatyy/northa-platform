@@ -70,8 +70,10 @@ export default function BookingLifecycleClient({ booking, staff }: { booking: Bo
                 <div>
                   <span className="font-bold">{s.staff.name}</span> ({s.staff.email})
                 </div>
-                <div className="text-muted-foreground font-mono text-xs">
-                  {new Date(s.startTime).toLocaleDateString()} - {new Date(s.endTime).toLocaleDateString()}
+                <div className="text-muted-foreground font-mono text-xs text-right">
+                  <p>{new Date(s.startTime).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</p>
+                  <p>to</p>
+                  <p>{new Date(s.endTime).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</p>
                 </div>
               </div>
             ))}
@@ -91,11 +93,11 @@ export default function BookingLifecycleClient({ booking, staff }: { booking: Bo
               </select>
             </div>
             <div className="space-y-2">
-              <Label className="text-[10px] uppercase">Start Date</Label>
+              <Label className="text-[10px] uppercase">Start Date & Time</Label>
               <input type="datetime-local" required value={startDate} onChange={e => setStartDate(e.target.value)} className="w-full h-10 border border-border bg-background px-3 text-sm focus:outline-none focus:border-primary rounded-none" />
             </div>
             <div className="space-y-2">
-              <Label className="text-[10px] uppercase">End Date</Label>
+              <Label className="text-[10px] uppercase">End Date & Time</Label>
               <input type="datetime-local" required value={endDate} onChange={e => setEndDate(e.target.value)} className="w-full h-10 border border-border bg-background px-3 text-sm focus:outline-none focus:border-primary rounded-none" />
             </div>
           </div>
